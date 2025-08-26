@@ -66,13 +66,13 @@ resource "aws_iam_role_policy" "lambda_policy" {
 
 # Função Lambda
 resource "aws_lambda_function" "stop_resources" {
-  filename      = data.archive_file.lambda_zip.output_path
-  function_name = "guard-cost-stop-resources"
-  role          = aws_iam_role.lambda_role.arn
-  handler       = "lambda_function.lambda_handler"
-  runtime       = "python3.9"
-  timeout       = 60
-
+  filename         = data.archive_file.lambda_zip.output_path
+  function_name    = "guard-cost-stop-resources"
+  role            = aws_iam_role.lambda_role.arn
+  handler         = "lambda_function.lambda_handler"
+  runtime          = "python3.9"
+  timeout          = 60
+  
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
   environment {
@@ -98,13 +98,4 @@ resource "aws_cloudwatch_log_group" "lambda_logs" {
     Environment = "production"
     Project     = "guard-cost"
   }
-}
-
-# Permissão para SNS invocar a Lambda
-resource "aws_lambda_permission" "allow_sns" {
-  statement_id  = "AllowExecutionFromSNS"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.stop_resources.function_name
-  principal     = "sns.amazonaws.com"
-  source_arn    = aws_sns_topic.cost_alerts.arn
 }
