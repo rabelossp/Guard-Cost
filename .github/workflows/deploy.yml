@@ -20,7 +20,15 @@ jobs:
         working-directory: ./terraform
         run: terraform fmt -check
 
-      # Valida sintaxe/refs do Terraform
+      # Primeiro precisa inicializar os providers
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Agora sim pode validar
       - name: Terraform Validate
         working-directory: ./terraform
         run: terraform validate
@@ -29,18 +37,10 @@ jobs:
       - name: Zip Lambda code
         run: |
           cd lambda
-          # Se tiver dependências extras (requirements.txt), instala antes:
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt -t .
           fi
           zip -r ../terraform/lambda.zip .
-
-      - name: Terraform Init
-        working-directory: ./terraform
-        run: terraform init
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Plan
         working-directory: ./terraform
