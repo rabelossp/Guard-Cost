@@ -1,49 +1,41 @@
-﻿🚨 AWS Cost Guard com Terraform + GitHub Actions
+﻿    🎯 Propósito do Projeto
+    
+O Guard-Cost é uma solução de controle automático de custos da AWS que atua como um "guarda" dos seus gastos na nuvem. O projeto foi criado para evitar surpresas na fatura da AWS.
 
-Este projeto cria uma automação que desliga recursos na AWS automaticamente caso o custo passe de 0,01 USD. Ele usa:
-Terraform para provisionar toda a infra
-Lambda para desligar recursos (ex.: EC2)
-AWS Budget + SNS para monitorar custos
-GitHub Actions para deploy automático
+    🔍 Como Funciona
 
+O sistema funciona da seguinte forma:
 
-🚀 Passo a Passo
-1. Criar repositório no GitHub
+1. Monitoramento: Usa o AWS Budgets para monitorar gastos em tempo real
+2. Limite: Define um limite muito baixo de custo (US$ 0,01)
+3. Alerta: Quando o custo passa desse limite, dispara uma notificação via SNS
+4. Ação Automática: Executa uma função Lambda que desliga automaticamente os recursos da AWS (como instâncias EC2)
 
-Clone este projeto ou crie o seu repositório:
-git clone git@github.com:rabelossp/Guard-Cost.git
+    🛠️ Tecnologias Utilizadas
 
-2. Configurar Secrets no GitHub
+-Terraform (84.6% do código): Infraestrutura como código para provisionar todos os recursos
+-AWS Lambda com Python (15.4% do código): Função que executa o desligamento dos recursos
+-AWS Budgets: Para monitoramento de custos
+-AWS SNS: Para notificações e alertas
+-GitHub Actions: Para automação de deploy (CI/CD)
 
-No repositório → Settings > Secrets and variables > Actions > New repository secret.
-Crie:
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-AWS_REGION
+    ✅ Funcionalidades Atuais
 
-🔐 Segurança
-As chaves ficam em GitHub Secrets, nunca no código.
+✅ Criação automática de orçamento com alertas
+✅ Notificações quando o limite é atingido
+✅ Execução de Lambda para interromper recursos definidos
 
+    🔮 Próximos Passos (Planejados)
 
-🛠️ Tecnologias utilizadas
+-Suporte a múltiplos tipos de recursos (EC2, RDS, ECS, DocumentDB)
+-Customização de recursos via variáveis do Terraform
+-Melhorias no monitoramento e relatórios
 
-Terraform → Infraestrutura como código
-AWS Lambda (Python) → Automação das ações de parada
-AWS Budgets → Monitoramento de gastos
-AWS SNS → Notificações e disparo de alertas
-GitHub Actions → Automação de deploy (CI/CD)
+    💡 Casos de Uso
 
+Este projeto é ideal para:
 
-📋 Status
-
-Atualmente o Guard-Cost já é capaz de:
-Criar um orçamento com alerta via AWS Budgets
-Disparar notificações quando o limite for atingido
-Executar uma Lambda para interromper recursos definidos
-
-
-📌 Próximos passos
-
-Adicionar suporte a múltiplos tipos de recursos (EC2, RDS, ECS, DocumentDB)
-Permitir customização dos recursos diretamente via variáveis do Terraform
-Melhorar monitoramento e relatórios
+-Estudantes aprendendo AWS que querem evitar gastos acidentais
+-Desenvolvedores testando recursos em contas pessoais
+-Empresas que querem um controle rigoroso de custos em ambientes de desenvolvimento
+-Projetos POC onde o orçamento é muito limitado
