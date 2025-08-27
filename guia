@@ -1,0 +1,102 @@
+# 🚨 Guard-Cost: Proteção Automática contra Custos AWS
+
+## 📖 Sobre o Projeto
+O Guard-Cost é uma solução automatizada que monitora seus gastos na AWS e **desliga automaticamente** recursos quando o orçamento é ultrapassado, evitando surpresas na fatura.
+
+## 🎯 Funcionalidades
+- ✅ Monitoramento em tempo real de custos AWS
+- ✅ Alerta automático quando passa de $0,01 USD
+- ✅ Desligamento automático de recursos (EC2, RDS, ECS)
+- ✅ Deploy automatizado com GitHub Actions
+- ✅ Infraestrutura como código com Terraform
+
+## 🛠️ Tecnologias Utilizadas
+- **Terraform**: Infraestrutura como código
+- **AWS Lambda (Python)**: Automação das ações
+- **AWS Budgets**: Monitoramento de gastos
+- **AWS SNS**: Sistema de notificações
+- **GitHub Actions**: CI/CD Pipeline
+
+## 🚀 Como Implementar
+
+### Pré-requisitos
+- Conta AWS ativa
+- Conta GitHub
+- AWS CLI configurado (opcional para testes locais)
+
+### Passo 1: Fork/Clone do Repositório
+```bash
+git clone https://github.com/rabelossp/Guard-Cost.git
+cd Guard-Cost
+```
+
+### Passo 2: Configurar Secrets no GitHub
+No seu repositório GitHub:
+1. Vá em **Settings** > **Secrets and variables** > **Actions**
+2. Crie os seguintes secrets:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+   - `AWS_REGION` (ex: us-east-1)
+
+### Passo 3: Estrutura do Projeto
+```
+Guard-Cost/
+├── .github/workflows/    # GitHub Actions
+├── terraform/           # Arquivos Terraform
+│   ├── main.tf
+│   ├── lambda.tf
+│   ├── budget.tf
+│   └── variables.tf
+├── lambda/             # Código Python da Lambda
+│   └── lambda_function.py
+└── README.md
+```
+
+### Passo 4: Deploy Automático
+1. Faça um push para a branch `main`
+2. O GitHub Actions será executado automaticamente
+3. A infraestrutura será criada na AWS
+
+### Passo 5: Personalização (Opcional)
+- Ajuste o limite de custo em `terraform/budget.tf`
+- Modifique quais recursos desligar em `lambda/lambda_function.py`
+- Configure notificações por email no SNS
+
+## ⚙️ Como Funciona
+
+### Fluxo de Funcionamento
+1. **AWS Budgets** monitora gastos continuamente
+2. Quando o custo passa de $0,01 USD, dispara **SNS**
+3. **SNS** aciona a **Lambda Function**
+4. **Lambda** executa ações de contenção (desligar EC2, RDS, etc.)
+5. Você recebe notificação do que foi desligado
+
+### Recursos Suportados
+- ✅ EC2 Instances
+- ✅ RDS Instances
+- ✅ ECS Services
+- 🔄 DocumentDB (em desenvolvimento)
+- 🔄 ElastiCache (em desenvolvimento)
+
+## 💰 Economia Estimada
+- **Sem Guard-Cost**: Risco de gastos descontrolados
+- **Com Guard-Cost**: Custo máximo de ~$0,01-0,05 USD/mês
+- **ROI**: Potencial economia de centenas de dólares
+
+## 🔒 Segurança
+- Credenciais AWS armazenadas em GitHub Secrets
+- IAM Roles com permissões mínimas necessárias
+- Logs detalhados no CloudWatch
+- Reversibilidade total (pode religar recursos manualmente)
+
+## 📊 Casos de Uso Ideais
+- **Estudantes**: Aprendendo AWS sem medo da fatura
+- **Desenvolvedores**: Ambientes de desenvolvimento seguros
+- **Startups**: Controle rigoroso de custos em projetos POC
+- **Empresas**: Ambientes de sandbox com orçamento limitado
+
+## 🚨 Avisos Importantes
+- ⚠️ Configure adequadamente quais recursos podem ser desligados
+- ⚠️ Teste em ambiente não-produtivo primeiro
+- ⚠️ Mantenha backups de dados importantes
+- ⚠️ Recursos desligados podem afetar aplicações ativas
